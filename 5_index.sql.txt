@@ -1,0 +1,2 @@
+CREATE INDEX idx_patients_lastname ON Patients (LastName);
+CREATE INDEX idx_diseases_description ON Diseases (Description);

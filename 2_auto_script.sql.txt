@@ -1,0 +1,38 @@
+-- Очистка таблиц (если нужно)
+TRUNCATE TABLE PatientDiseases RESTART IDENTITY CASCADE;
+TRUNCATE TABLE Addresses RESTART IDENTITY CASCADE;
+TRUNCATE TABLE Diseases RESTART IDENTITY CASCADE;
+TRUNCATE TABLE Patients RESTART IDENTITY CASCADE;
+
+-- Заполнение таблицы Patients (100 пациентов)
+INSERT INTO Patients (LastName, FirstName, MiddleName, DateOfBirth)
+SELECT 
+    'Фамилия_' || i,
+    'Имя_' || i,
+    'Отчество_' || i,
+    DATE '1980-01-01' + (random() * 365 * 30)::INT
+FROM generate_series(1, 100) AS i;
+
+-- Заполнение таблицы Addresses (по одному адресу на каждого пациента)
+INSERT INTO Addresses (PatientID, Address)
+SELECT 
+    PatientID,
+    'ул. ' || md5(random()::text) || ', д. ' || (random() * 100)::INT || ', кв. ' || (random() * 100)::INT
+FROM Patients;
+
+-- Заполнение таблицы Diseases (10 заболеваний)
+INSERT INTO Diseases (Description)
+SELECT 
+    'Заболевание_' || i
+FROM generate_series(1, 10) AS i;
+
+-- Заполнение таблицы PatientDiseases (случайные заболевания для пациентов)
+INSERT INTO PatientDiseases (PatientID, DiseaseCode)
+SELECT 
+    p.PatientID,
+    d.DiseaseCode
+FROM 
+    Patients p
+CROSS JOIN 
+    Diseases d
+WHERE random() < 0.3;  -- Вероятность 30%, что у пациента будет заболевание

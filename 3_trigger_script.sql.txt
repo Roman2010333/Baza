@@ -1,0 +1,15 @@
+ALTER TABLE Patients
+ADD COLUMN LastModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+CREATE OR REPLACE FUNCTION update_last_modified()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.LastModified = CURRENT_TIMESTAMP;  -- Обновляем поле LastModified
+    RETURN NEW;  -- Возвращаем измененную запись
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_before_update_patient
+BEFORE INSERT OR UPDATE ON Patients
+FOR EACH ROW
+EXECUTE FUNCTION update_last_modified();

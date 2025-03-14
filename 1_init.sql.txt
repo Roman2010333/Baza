@@ -1,0 +1,27 @@
+CREATE TABLE Patients (
+    PatientID SERIAL PRIMARY KEY,  -- ID пациента (автоинкремент)
+    LastName VARCHAR(100) NOT NULL,  -- Фамилия (обязательно)
+    FirstName VARCHAR(100) NOT NULL,  -- Имя (обязательно)
+    MiddleName VARCHAR(100),  -- Отчество (необязательно)
+    DateOfBirth DATE NOT NULL  -- Дата рождения
+);
+
+CREATE TABLE Addresses (
+    PatientID INT,  -- ID пациента
+    Address VARCHAR(255) NOT NULL,  -- Адрес
+    PRIMARY KEY (PatientID, Address),
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID) ON DELETE CASCADE
+);
+
+CREATE TABLE PatientDiseases (
+    PatientID INT,  -- ID пациента
+    DiseaseCode INT,  -- № заболевания по классификатору
+    PRIMARY KEY (PatientID, DiseaseCode),
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID) ON DELETE CASCADE,
+    FOREIGN KEY (DiseaseCode) REFERENCES Diseases(DiseaseCode) ON DELETE CASCADE
+);
+
+CREATE TABLE Diseases (
+    DiseaseCode SERIAL PRIMARY KEY,  -- № заболевания по классификатору (автоинкремент)
+    Description VARCHAR(255) NOT NULL  -- Описание заболевания
+);

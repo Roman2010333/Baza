@@ -1,0 +1,12 @@
+EXPLAIN ANALYZE
+SELECT 
+    p.PatientID,
+    p.LastName,
+    p.FirstName,
+    d.Description AS Disease
+FROM 
+    Patients p
+JOIN 
+    PatientDiseases pd ON p.PatientID = pd.PatientID
+JOIN 
+    Diseases d ON pd.DiseaseCode = d.DiseaseCode;

@@ -1,0 +1,39 @@
+-- Получить список пациентов с их адресами и заболеваниями
+SELECT 
+    p.PatientID,
+    p.LastName,
+    p.FirstName,
+    p.MiddleName,
+    p.DateOfBirth,
+    a.Address,
+    d.Description AS Disease
+FROM 
+    Patients p
+LEFT JOIN 
+    Addresses a ON p.PatientID = a.PatientID
+LEFT JOIN 
+    PatientDiseases pd ON p.PatientID = pd.PatientID
+LEFT JOIN 
+    Diseases d ON pd.DiseaseCode = d.DiseaseCode;
+
+-- Получить всех пациентов
+SELECT * FROM Patients;
+
+-- Получить все адреса
+SELECT * FROM Addresses;
+
+-- Получить все заболевания
+SELECT * FROM Diseases;
+
+-- Получить данные о заболеваниях пациентов
+SELECT 
+    p.PatientID,
+    p.LastName,
+    p.FirstName,
+    d.Description AS Disease
+FROM 
+    Patients p
+JOIN 
+    PatientDiseases pd ON p.PatientID = pd.PatientID
+JOIN 
+    Diseases d ON pd.DiseaseCode = d.DiseaseCode;

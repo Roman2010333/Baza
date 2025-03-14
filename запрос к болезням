@@ -1,0 +1,9 @@
+SELECT 
+    d.DiseaseCode,
+    d.Description AS DiseaseDescription
+FROM 
+    PatientDiseases pd
+JOIN 
+    Diseases d ON pd.DiseaseCode = d.DiseaseCode
+WHERE 
+    pd.PatientID = :patient_id;
